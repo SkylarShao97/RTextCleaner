@@ -1,22 +1,25 @@
-dist: jammy
+dist: jammy  # 使用 Ubuntu 22.04 LTS
 language: r
 r:
-  - "4.3.2"  
+  - "4.4.3"  # 指定 R 版本
 
-cache: packages  
+cache: packages  # 缓存 R 包，加快 CI 运行速度
 
 before_install:
-  - sudo rm -f /etc/apt/sources.list.d/google-chrome.list || true
-  - sudo rm -f /etc/apt/trusted.gpg.d/google-chrome.gpg || true
-  - sudo apt-key del D38B4796 || true
-  - sudo apt-get remove --purge google-chrome-stable chromium-browser -y || true
-  - sudo apt-get update --allow-releaseinfo-change || true
+  - sudo apt update
+  - sudo apt install -y software-properties-common
+  - sudo add-apt-repository -y ppa:c2d4u.team/c2d4u4.0+  # R 官方 PPA 源
+  - sudo apt update
+  - sudo apt install -y r-base r-base-dev  # 安装 R 4.4.3
+  - sudo apt install -y libcurl4-openssl-dev libxml2-dev libssl-dev  # 确保依赖正确安装
+  - Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'  # 安装 remotes
+  - Rscript -e 'install.packages("httr", repos="https://cloud.r-project.org")'  # 确保 httr 被安装
 
 install:
-  - Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
-  - Rscript -e 'remotes::install_deps(dependencies = TRUE)'
+  - Rscript -e 'remotes::install_deps(dependencies = TRUE)'  # 安装所有 package 依赖
 
 script:
+  - Rscript -e 'R.version.string'  # 打印 R 版本，确保正确安装
   - Rscript -e 'library(httr); packageVersion("httr")'  # 确保 `httr` 真的被安装了
   - R CMD build .
   - R CMD check *tar.gz --no-manual --as-cran
