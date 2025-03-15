@@ -19,6 +19,7 @@ before_install:
   - sudo rm -rf /etc/apt/trusted.gpg.d/google-chrome.gpg || true
   - sudo apt-key del D38B4796 || true
   - sudo find /etc/apt -name "*google*" -exec rm -rf {} + || true
+  - sudo rm -rf /var/lib/apt/lists/*
   - sudo apt-get clean || true
   - sudo apt-get autoclean || true
   - sudo apt-get update --allow-releaseinfo-change || true
