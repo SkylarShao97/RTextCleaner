@@ -10,17 +10,20 @@
 #   - R CMD check *tar.gz --as-cran
 language: r
 r:
-  - release  # Ensure you are using the latest R version
+  - release  
 
-cache: packages
+cache: packages  
 
 before_install:
+  - sudo apt-get update  
+  - sudo apt-get remove --purge google-chrome-stable -y || true 
   - Rscript -e 'install.packages(c("cpp11", "waldo", "gtable", "purrr"), repos="https://cloud.r-project.org")'
 
 install:
-  - Rscript -e 'install.packages("remotes")'
+  - Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
   - Rscript -e 'remotes::install_deps(dependencies = TRUE)'
 
 script:
   - R CMD build .
   - R CMD check *tar.gz --no-manual --as-cran
+
