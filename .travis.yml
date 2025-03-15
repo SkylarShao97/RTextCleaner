@@ -15,15 +15,6 @@ r:
 cache: packages  
 
 before_install:
-  - set -x
-  # **Remove Google Chrome GPG Key and related files**
-  - sudo rm -f /etc/apt/sources.list.d/google-chrome.list || true
-  - sudo rm -f /etc/apt/trusted.gpg.d/google-chrome.gpg || true
-  - sudo apt-key del D38B4796 || true
-  - sudo find /etc/apt -name "*google*" -exec rm -rf {} + || true
-  # **Recreate GPG directory if missing**
-  - sudo mkdir -p /etc/apt/trusted.gpg.d
-  - sudo chmod 755 /etc/apt/trusted.gpg.d
   # **Clean APT cache**
   - sudo rm -rf /var/lib/apt/lists/*
   - sudo apt-get clean || true
@@ -31,7 +22,7 @@ before_install:
   - sudo apt-get update --allow-releaseinfo-change || true
   # **Install R dependencies**
   - Rscript -e 'install.packages(c("cpp11", "waldo", "gtable", "purrr"), repos="https://cloud.r-project.org")'
-  
+
 install:
   - Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
   - Rscript -e 'remotes::install_deps(dependencies = TRUE)'
