@@ -8,6 +8,7 @@
 # script:
 #   - R CMD build .
 #   - R CMD check *tar.gz --as-cran
+dist: focal  # 指定 Ubuntu 版本，避免自动安装 Google Chrome
 language: r
 r:
   - release  
@@ -15,22 +16,13 @@ r:
 cache: packages  
 
 before_install:
-  # **Debugging: Print environment information**
-  - uname -a
-  - lsb_release -a
-  - df -h
-  - sudo apt-get update --allow-releaseinfo-change -qq
-  # **Clean APT cache**
-  - sudo rm -rf /var/lib/apt/lists/*
-  - sudo apt-get clean || true
-  - sudo apt-get autoclean || true
-  - sudo apt-get update --allow-releaseinfo-change -qq
-  # **Install system dependencies (if needed)**
-  - sudo apt-get install -y --no-install-recommends \
-      libcurl4-openssl-dev \
-      libssl-dev \
-      libxml2-dev
-  # **Install R dependencies**
+  # 🚫 **彻底删除 Google Chrome，防止 Travis-CI 继续下载**
+  - sudo rm -f /etc/apt/sources.list.d/google-chrome.list || true
+  - sudo rm -f /etc/apt/trusted.gpg.d/google-chrome.gpg || true
+  - sudo apt-key del D38B4796 || true
+  - sudo apt-get remove --purge google-chrome-stable chromium-browser -y || true
+  - sudo apt-get update --allow-releaseinfo-change || true
+  # 安装 R 依赖
   - Rscript -e 'install.packages(c("cpp11", "waldo", "gtable", "purrr"), repos="https://cloud.r-project.org")'
 
 install:
