@@ -21,14 +21,15 @@ before_install:
   - sudo apt-key del D38B4796 || true
   - sudo apt-get remove --purge google-chrome-stable chromium-browser -y || true
   - sudo apt-get update --allow-releaseinfo-change || true
+  - Rscript -e 'remove.packages("httr")' || true  # 删除可能的损坏包
+  - Rscript -e 'install.packages("httr", repos="https://cloud.r-project.org")'  # 确保安装
+  - Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
 
 install:
-  # 🚀 **先手动安装 `httr` 及所有依赖**
-  - Rscript -e 'install.packages(c("httr", "cpp11", "waldo", "gtable", "purrr", "knitr", "rmarkdown"), repos="https://cloud.r-project.org")'
-  # 🚀 **然后安装 remotes 并下载剩余的 package 依赖**
-  - Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
+  - Rscript -e 'install.packages(c("cpp11", "waldo", "gtable", "purrr", "knitr", "rmarkdown"), repos="https://cloud.r-project.org")'
   - Rscript -e 'remotes::install_deps(dependencies = TRUE)'
 
 script:
+  - Rscript -e 'library(httr); packageVersion("httr")'  # 检查是否安装
   - R CMD build .
   - R CMD check *tar.gz --no-manual --as-cran
