@@ -8,7 +8,7 @@
 # script:
 #   - R CMD build .
 #   - R CMD check *tar.gz --as-cran
-dist: focal  # 指定 Ubuntu 版本，避免自动安装 Google Chrome
+dist: focal
 language: r
 r:
   - release  
@@ -16,14 +16,13 @@ r:
 cache: packages  
 
 before_install:
-  # 🚫 **彻底删除 Google Chrome，防止 Travis-CI 继续下载**
   - sudo rm -f /etc/apt/sources.list.d/google-chrome.list || true
   - sudo rm -f /etc/apt/trusted.gpg.d/google-chrome.gpg || true
   - sudo apt-key del D38B4796 || true
   - sudo apt-get remove --purge google-chrome-stable chromium-browser -y || true
   - sudo apt-get update --allow-releaseinfo-change || true
-  # 安装 R 依赖
-  - Rscript -e 'install.packages(c("cpp11", "waldo", "gtable", "purrr"), repos="https://cloud.r-project.org")'
+  # 🚀 **安装 `knitr`, `rmarkdown`, `httr` 以支持 Vignette 和 API 访问**
+  - Rscript -e 'install.packages(c("httr", "cpp11", "waldo", "gtable", "purrr", "knitr", "rmarkdown"), repos="https://cloud.r-project.org")'
 
 install:
   - Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
