@@ -15,11 +15,21 @@ r:
 cache: packages  
 
 before_install:
-  # **Clean APT cache (optional, but recommended for a clean environment)**
+  # **Debugging: Print environment information**
+  - uname -a
+  - lsb_release -a
+  - df -h
+  - sudo apt-get update --allow-releaseinfo-change -qq
+  # **Clean APT cache**
   - sudo rm -rf /var/lib/apt/lists/*
   - sudo apt-get clean || true
   - sudo apt-get autoclean || true
-  - sudo apt-get update --allow-releaseinfo-change || true
+  - sudo apt-get update --allow-releaseinfo-change -qq
+  # **Install system dependencies (if needed)**
+  - sudo apt-get install -y --no-install-recommends \
+      libcurl4-openssl-dev \
+      libssl-dev \
+      libxml2-dev
   # **Install R dependencies**
   - Rscript -e 'install.packages(c("cpp11", "waldo", "gtable", "purrr"), repos="https://cloud.r-project.org")'
 
