@@ -1,13 +1,3 @@
-# language: r
-# cache: packages
-
-# r:
-#   - release
-#   - oldrel
-
-# script:
-#   - R CMD build .
-#   - R CMD check *tar.gz --as-cran
 dist: focal
 language: r
 r:
@@ -21,8 +11,7 @@ before_install:
   - sudo apt-key del D38B4796 || true
   - sudo apt-get remove --purge google-chrome-stable chromium-browser -y || true
   - sudo apt-get update --allow-releaseinfo-change || true
-  - Rscript -e 'remove.packages("httr")' || true  # 删除可能的损坏包
-  - Rscript -e 'install.packages("httr", repos="https://cloud.r-project.org")'  # 确保安装
+  - Rscript -e 'install.packages("httr", repos="https://cloud.r-project.org")'
   - Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
 
 install:
@@ -30,6 +19,6 @@ install:
   - Rscript -e 'remotes::install_deps(dependencies = TRUE)'
 
 script:
-  - Rscript -e 'library(httr); packageVersion("httr")'  # 检查是否安装
+  - Rscript -e 'library(httr); packageVersion("httr")'  # 检查是否正确安装
   - R CMD build .
   - R CMD check *tar.gz --no-manual --as-cran
