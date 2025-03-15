@@ -15,7 +15,7 @@ r:
 cache: packages  
 
 before_install:
-  # **Clean APT cache**
+  # **Clean APT cache (optional, but recommended for a clean environment)**
   - sudo rm -rf /var/lib/apt/lists/*
   - sudo apt-get clean || true
   - sudo apt-get autoclean || true
