@@ -1,7 +1,7 @@
 dist: focal
 language: r
 r:
-  - release  
+  - "4.3.2"  
 
 cache: packages  
 
@@ -11,14 +11,12 @@ before_install:
   - sudo apt-key del D38B4796 || true
   - sudo apt-get remove --purge google-chrome-stable chromium-browser -y || true
   - sudo apt-get update --allow-releaseinfo-change || true
-  - Rscript -e 'install.packages("httr", repos="https://cloud.r-project.org")'
-  - Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
 
 install:
-  - Rscript -e 'install.packages(c("cpp11", "waldo", "gtable", "purrr", "knitr", "rmarkdown"), repos="https://cloud.r-project.org")'
+  - Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
   - Rscript -e 'remotes::install_deps(dependencies = TRUE)'
 
 script:
-  - Rscript -e 'library(httr); packageVersion("httr")'  # 检查是否正确安装
+  - Rscript -e 'library(httr); packageVersion("httr")'  # 确保 `httr` 真的被安装了
   - R CMD build .
   - R CMD check *tar.gz --no-manual --as-cran
