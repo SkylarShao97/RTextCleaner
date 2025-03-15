@@ -15,14 +15,17 @@ r:
 cache: packages  
 
 before_install:
-  - sudo rm -rf /etc/apt/sources.list.d/google-chrome.list || true
-  - sudo rm -rf /etc/apt/trusted.gpg.d/google-chrome.gpg || true
+  # **Remove Google Chrome GPG Key and related files**
+  - sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+  - sudo rm -f /etc/apt/trusted.gpg.d/google-chrome.gpg
   - sudo apt-key del D38B4796 || true
   - sudo find /etc/apt -name "*google*" -exec rm -rf {} + || true
+  # **Clean APT cache**
   - sudo rm -rf /var/lib/apt/lists/*
   - sudo apt-get clean || true
   - sudo apt-get autoclean || true
   - sudo apt-get update --allow-releaseinfo-change || true
+  # **Install R dependencies**
   - Rscript -e 'install.packages(c("cpp11", "waldo", "gtable", "purrr"), repos="https://cloud.r-project.org")'
 
 install:
