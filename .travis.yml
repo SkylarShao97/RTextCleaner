@@ -18,9 +18,11 @@ before_install:
   - sudo rm -rf /etc/apt/sources.list.d/google-chrome.list || true
   - sudo rm -rf /etc/apt/trusted.gpg.d/google-chrome.gpg || true
   - sudo apt-key del D38B4796 || true
+  - sudo find /etc/apt -name "*google*" -exec rm -rf {} + || true
+  - sudo apt-get clean || true
+  - sudo apt-get autoclean || true
   - sudo apt-get update --allow-releaseinfo-change || true
   - Rscript -e 'install.packages(c("cpp11", "waldo", "gtable", "purrr"), repos="https://cloud.r-project.org")'
-
 
 install:
   - Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
@@ -29,4 +31,3 @@ install:
 script:
   - R CMD build .
   - R CMD check *tar.gz --no-manual --as-cran
-
