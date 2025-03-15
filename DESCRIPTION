@@ -1,10 +1,12 @@
 Package: RTextCleaner
-Title: What the Package Does (One Line, Title Case)
+Title: A Toolkit for Cleaning and Processing Text Data in R
 Version: 0.0.0.9000
 Authors@R: 
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: RTextCleaner provides a set of functions for text preprocessing, 
+including text normalization, sentiment analysis, noise removal, and code-text 
+separation. It is designed to improve text quality for NLP tasks and data analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -13,6 +15,8 @@ Suggests:
     testthat (>= 3.0.0),
     mockery
 Config/testthat/edition: 3
+Depends:
+    R (>= 4.0.0)
 Imports:
     httr,
     jsonlite,
@@ -24,3 +28,9 @@ Imports:
     utils,
     stats,
     ggplot2
+Suggests:
+    testthat (>= 3.0.0),
+    mockery,
+    knitr,
+    rmarkdown
+Config/testthat/edition: 3
