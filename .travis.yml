@@ -15,13 +15,11 @@ r:
 cache: packages  
 
 before_install:
-  - sudo rm -f /etc/apt/sources.list.d/google-chrome.list
-  - sudo rm -f /etc/apt/trusted.gpg.d/google-chrome.gpg
+  - sudo rm -rf /etc/apt/sources.list.d/google-chrome.list || true
+  - sudo rm -rf /etc/apt/trusted.gpg.d/google-chrome.gpg || true
   - sudo apt-key del D38B4796 || true
-  - sudo apt-get update --allow-releaseinfo-change
+  - sudo apt-get update --allow-releaseinfo-change || true
   - Rscript -e 'install.packages(c("cpp11", "waldo", "gtable", "purrr"), repos="https://cloud.r-project.org")'
-
-
 
 
 install:
